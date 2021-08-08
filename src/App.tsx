@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { FoodCard } from "./components/FoodCard.js/FoodCard";
 import { SearchFood } from "./components/SearchFood/SearchFood";
+import { Home } from "./pages";
 
 interface INutritionValues {
   description: string;
@@ -25,6 +26,7 @@ const App: React.FC = () => {
 
   return (
     <div className="App">
+      <Home />
       <SearchFood nutrition={nutrition} setNutrition={setNutrition} />
       {nutrition !== null && nutrition.foods ? (
         nutrition.foods.map((food: INutritionValues, idx: number) => (

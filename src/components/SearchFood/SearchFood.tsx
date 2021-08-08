@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { API_KEY } from "../../api";
-import styles from "./searchfood.module.scss";
+import styles from "./searchfood.module.sass";
 
 type FoodsList = {
   foods: any[];
