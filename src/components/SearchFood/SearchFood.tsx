@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { API_KEY } from "../../api";
 import styles from "./searchfood.module.sass";
+import { AiOutlineSearch } from "react-icons/ai";
 
 type FoodsList = {
   foods: any[];
@@ -27,6 +28,7 @@ export const SearchFood: React.FC<SearchFoodProps> = ({
 
   return (
     <div className={styles.main}>
+      <AiOutlineSearch className={styles.searchIcon} />
       <input
         data-testid="search-input"
         type="text"

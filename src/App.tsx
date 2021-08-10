@@ -26,15 +26,7 @@ const App: React.FC = () => {
 
   return (
     <div className="App">
-      <Home />
-      <SearchFood nutrition={nutrition} setNutrition={setNutrition} />
-      {nutrition !== null && nutrition.foods ? (
-        nutrition.foods.map((food: INutritionValues, idx: number) => (
-          <FoodCard key={idx} food={food} />
-        ))
-      ) : (
-        <div>Search for a food</div>
-      )}
+      <Home nutrition={nutrition} setNutrition={setNutrition} />
     </div>
   );
 };
