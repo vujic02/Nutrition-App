@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Home } from "./pages";
+import { LoadingPage } from "./pages/LoadingPage";
 
 // interface INutritionValues {
 //   description: string;
@@ -18,12 +19,21 @@ type FoodsList = {
 
 const App: React.FC = () => {
   const [nutrition, setNutrition] = useState<FoodsList | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
   console.log(nutrition, "app");
 
   return (
     <div className="App">
-      <Home nutrition={nutrition} setNutrition={setNutrition} />
+      {nutrition === null ? (
+        <Home nutrition={nutrition} setNutrition={setNutrition} />
+      ) : (
+        <LoadingPage
+          nutrition={nutrition}
+          loading={loading}
+          setLoading={setLoading}
+        />
+      )}
     </div>
   );
 };
