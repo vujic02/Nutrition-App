@@ -25,7 +25,7 @@
 
 .container
     display: grid
-    grid-template-columns: .5fr 1fr
+    grid-template-columns: .4fr 1fr
     gap: 0 50px
     width: 100%
 
@@ -53,53 +53,68 @@
             border-radius: 50%
             margin-top: 2rem
 
-            .graphList
+        .graphList
+            display: flex
+            flex-direction: column
+      
+        .graphText1
+            font-size: 1.1rem
+            font-weight: 700
+            color: $gray
+            margin: 4px 0  
+
+        .graphListItem
+            width: 100%
+            display: grid
+            grid-template-columns: 1fr 1fr 1fr
+            color: $lightgray
+            border-bottom: 1px solid $lightgray
+            margin-top: 8px
+
+            p:nth-child(2) 
                 display: flex
-                flex-direction: column
+                justify-content: center
 
-                .graphText1
-                    font-size: 1.1rem
-                    font-weight: 600
-                    color: $gray
-                    margin: 4px 0  
+            p:nth-child(3) 
+                display: flex
+                justify-content: flex-end   
 
-                .listItemTest
-                    width: 100%
-                    display: flex
-                    flex-direction: row
-                    justify-content: space-between
-                    align-items: center
-                    color: $lightgray
-                    border-bottom: 1px solid $lightgray
-                    margin-top: 6px
+        .color 
+            display: flex
+            align-items: center
+            flex: 1
 
-                    .graphText2
-                        font-size: 1rem
-                        font-weight: 600
-                        color: $gray
-                        margin: 4px 0     
+            span 
+                margin-left: 5px          
 
-                    .graphText3
-                        font-size: 1rem
-                        font-weight: 400
-                        color: $gray
-                        margin: 4px 0
+        .graphText2
+            font-size: 1rem
+            font-weight: 800
+            color: $gray
+            margin: 4px 0
+             
 
-                    .carbohydrates
-                        background: $blue
-                        width: 20px
-                        height: 20px
+        .graphText3
+            font-size: 1rem
+            font-weight: 500
+            color: $gray
+            margin: 4px 0
 
-                    .proteins
-                        background: $lightblue
-                        width: 20px
-                        height: 20px
+        .carbohydrates
+            background: $blue
+            width: 20px
+            height: 20px
 
-                    .fats
-                        background: $red
-                        width: 20px
-                        height: 20px          
+        .proteins
+            background: $lightblue
+            width: 20px
+            height: 20px
 
+        .fats
+            background: $red
+            width: 20px
+            height: 20px
+    
     .detailedInfo
         display: flex
         flex-direction: column
@@ -109,7 +124,7 @@
         width: 100%
 
         .searchedItem
-            font-size: 2rem
+            font-size: 1.5rem
             font-weight: 600
             color: $gray
 
