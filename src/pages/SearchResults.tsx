@@ -1,5 +1,7 @@
-import React, { useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { ListItem } from "../components/ListItem/ListItem";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Doughnut } from "react-chartjs-2";
 import styles from "./styles/searchresults.module.sass";
 
 type FoodsList = {
@@ -10,24 +12,72 @@ interface SearchResultsProps {
   nutrition: FoodsList | null;
 }
 
+interface graphData {
+  labels: ["Fats", "Proteins", "Carbohydrates"];
+  datasets: [
+    {
+      label: "Nutrition";
+      data: number[] | [];
+      backgroundColor: ["rgb(224,85,85)", "rgb(15,201,231)", "rgb(22,128,234)"];
+    }
+  ];
+}
+
 const SearchResults: React.FC<SearchResultsProps> = ({ nutrition }) => {
-  const graphRef = useRef<any>();
+  ChartJS.register(ArcElement, Tooltip, Legend);
+
+  const [loaded, setLoaded] = useState<boolean>(false);
+  const [percentage, setPercentage] = useState<number[] | []>([]);
+  let fatPercentage = 0;
+  let proteinPercentage = 0;
+  let carbohydratesPercentage = 0;
+  const [data, setData] = useState<graphData>({
+    labels: ["Fats", "Proteins", "Carbohydrates"],
+    datasets: [
+      {
+        label: "Nutrition",
+        data: [],
+        backgroundColor: [
+          "rgb(224,85,85)",
+          "rgb(15,201,231)",
+          "rgb(22,128,234)",
+        ],
+      },
+    ],
+  });
 
   useEffect(() => {
     let protein = nutrition?.foods[0].foodNutrients[0].value;
     let fat = nutrition?.foods[0].foodNutrients[1].value;
     let carbohydrates = nutrition?.foods[0].foodNutrients[2].value;
-    let sorted = [protein, fat, carbohydrates].sort((a, b) => b - a);
 
-    if (carbohydrates === sorted[0]) {
-      graphRef.current.classList.add("template1");
-    }
-    if (protein === sorted[0]) {
-      graphRef.current.classList.add("template2");
-    }
-    if (fat === sorted[0]) {
-      graphRef.current.classList.add("template3");
-    }
+    let fatPercentage = Math.floor(
+      (fat / (protein + fat + carbohydrates)) * 100
+    );
+    let proteinPercentage = Math.floor(
+      (protein / (protein + fat + carbohydrates)) * 100
+    );
+    let carbohydratesPercentage = Math.floor(
+      (carbohydrates / (protein + fat + carbohydrates)) * 100
+    );
+
+    setPercentage([fatPercentage, proteinPercentage, carbohydratesPercentage]);
+    setData({
+      labels: ["Fats", "Proteins", "Carbohydrates"],
+      datasets: [
+        {
+          label: "Nutrition",
+          data: [fat, protein, carbohydrates],
+          backgroundColor: [
+            "rgb(224,85,85)",
+            "rgb(15,201,231)",
+            "rgb(22,128,234)",
+          ],
+        },
+      ],
+    });
+
+    setLoaded(true);
   }, []);
 
   return (
@@ -41,7 +91,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({ nutrition }) => {
             </h1>
 
             <div className={styles.center}>
-              <div className={styles.graph} ref={graphRef}></div>
+              {loaded && <Doughnut data={data} />}
             </div>
 
             <div className={styles.graphList}>
@@ -54,7 +104,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({ nutrition }) => {
                 <p className={styles.graphText2}>
                   {nutrition?.foods[0].foodNutrients[2].value}g
                 </p>
-                <p className={styles.graphText2}>57%</p>
+                <p className={styles.graphText2}>{loaded && percentage[2]}%</p>
               </div>
               <div className={styles.graphListItem}>
                 <div className={styles.color}>
@@ -64,7 +114,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({ nutrition }) => {
                 <p className={styles.graphText2}>
                   {nutrition?.foods[0].foodNutrients[0].value}g
                 </p>
-                <p className={styles.graphText2}>23%</p>
+                <p className={styles.graphText2}>{loaded && percentage[1]}%</p>
               </div>
               <div className={styles.graphListItem}>
                 <div className={styles.color}>
@@ -74,7 +124,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({ nutrition }) => {
                 <p className={styles.graphText2}>
                   {nutrition?.foods[0].foodNutrients[1].value}g
                 </p>
-                <p className={styles.graphText2}>32%</p>
+                <p className={styles.graphText2}>{loaded && percentage[0]}%</p>
               </div>
             </div>
           </div>
