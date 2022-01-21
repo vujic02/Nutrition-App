@@ -10,12 +10,14 @@ interface LoadingPageProps {
   nutrition: FoodsList | null;
   loading: boolean;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  setNutrition: React.Dispatch<React.SetStateAction<FoodsList | null>>;
 }
 
 export const LoadingPage: React.FC<LoadingPageProps> = ({
   nutrition,
   loading,
   setLoading,
+  setNutrition,
 }) => {
   useEffect(() => {
     setLoading(true);
@@ -24,5 +26,17 @@ export const LoadingPage: React.FC<LoadingPageProps> = ({
     }, 2000);
   }, []);
 
-  return <>{loading ? <Loading /> : <SearchResults nutrition={nutrition} />}</>;
+  return (
+    <>
+      {loading ? (
+        <Loading />
+      ) : (
+        <SearchResults
+          nutrition={nutrition}
+          setNutrition={setNutrition}
+          setLoading={setLoading}
+        />
+      )}
+    </>
+  );
 };

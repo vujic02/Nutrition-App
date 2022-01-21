@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { ListItem } from "../components/ListItem/ListItem";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
+import { BiArrowBack } from "react-icons/bi";
 import styles from "./styles/searchresults.module.sass";
 
 type FoodsList = {
@@ -10,6 +11,8 @@ type FoodsList = {
 
 interface SearchResultsProps {
   nutrition: FoodsList | null;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  setNutrition: React.Dispatch<React.SetStateAction<FoodsList | null>>;
 }
 
 interface graphData {
@@ -23,14 +26,15 @@ interface graphData {
   ];
 }
 
-const SearchResults: React.FC<SearchResultsProps> = ({ nutrition }) => {
+const SearchResults: React.FC<SearchResultsProps> = ({
+  nutrition,
+  setNutrition,
+  setLoading,
+}) => {
   ChartJS.register(ArcElement, Tooltip, Legend);
 
   const [loaded, setLoaded] = useState<boolean>(false);
   const [percentage, setPercentage] = useState<number[] | []>([]);
-  let fatPercentage = 0;
-  let proteinPercentage = 0;
-  let carbohydratesPercentage = 0;
   const [data, setData] = useState<graphData>({
     labels: ["Fats", "Proteins", "Carbohydrates"],
     datasets: [
@@ -80,10 +84,18 @@ const SearchResults: React.FC<SearchResultsProps> = ({ nutrition }) => {
     setLoaded(true);
   }, []);
 
+  const handleBack = () => {
+    setNutrition(null);
+    setLoading(true);
+  };
+
   return (
     <>
       <div className={styles.overlay}></div>
       <div className={styles.main}>
+        <div className={styles.backToHomepage} onClick={() => handleBack()}>
+          <BiArrowBack className={styles.arrow} /> Back to homepage
+        </div>
         <div className={styles.container}>
           <div className={styles.graphInfo}>
             <h1 className={styles.heading}>
@@ -91,7 +103,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({ nutrition }) => {
             </h1>
 
             <div className={styles.center}>
-              {loaded && <Doughnut data={data} />}
+              {loaded && <Doughnut className={styles.graph} data={data} />}
             </div>
 
             <div className={styles.graphList}>
